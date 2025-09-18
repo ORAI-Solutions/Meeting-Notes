@@ -1,43 +1,43 @@
 # Build Instructions for Meeting Notes
 
-## Build Optionen
+## Build Options
 
-Es gibt jetzt **zwei Build-Varianten**:
+There are now **two build variants**:
 
-### 1. Optimierter Build (OHNE CUDA-Bibliotheken) - EMPFOHLEN
-- **Größe**: ~1.6 GB
-- **CUDA-Support**: On-demand Download über die App-Settings
-- **Spec-Datei**: `desktop_optimized.spec`
+### 1. Optimized Build (WITHOUT CUDA Libraries) - RECOMMENDED
+- **Size**: ~1.6 GB
+- **CUDA Support**: On-demand download via app settings
+- **Spec File**: `desktop_optimized.spec`
 
-### 2. Vollständiger Build (MIT CUDA-Bibliotheken)  
-- **Größe**: ~3.5 GB
-- **CUDA-Support**: Sofort verfügbar
-- **Spec-Datei**: `desktop.spec`
+### 2. Full Build (WITH CUDA Libraries)  
+- **Size**: ~3.5 GB
+- **CUDA Support**: Immediately available
+- **Spec File**: `desktop.spec`
 
-## Vorbereitung
+## Preparation
 
-### 1. Aufräumen alter Builds
+### 1. Clean Up Old Builds
 ```powershell
-# Im backend Verzeichnis:
+# In the backend directory:
 Remove-Item -Recurse -Force build, dist -ErrorAction SilentlyContinue
 ```
 
-### 2. Dependencies aktualisieren (ohne CUDA-Runtime)
+### 2. Update Dependencies (without CUDA Runtime)
 ```powershell
-# Die CUDA-Runtime-Pakete sind jetzt auskommentiert in pyproject.toml
+# The CUDA runtime packages are now commented out in pyproject.toml
 uv sync
 ```
 
-**Wichtig: llama-cpp-python Installation**
-Das Paket `llama-cpp-python` ist **zwingend erforderlich** für die Summarization-Funktion.
+**Important: llama-cpp-python Installation**
+The `llama-cpp-python` package is **mandatory** for the summarization feature.
 
-Falls der Build mit einem Fehler abbricht, dass llama-cpp-python fehlt:
+If the build fails with an error that llama-cpp-python is missing:
 ```powershell
-# Für CPU-only Support:
+# For CPU-only support:
 uv pip install llama-cpp-python
 ```
 
-### 3. Frontend bauen (falls noch nicht gemacht)
+### 3. Build Frontend (if not already done)
 ```powershell
 cd ../frontend
 pnpm install
@@ -45,75 +45,75 @@ pnpm build
 cd ../backend
 ```
 
-## Build-Prozess
+## Build Process
 
-### Option A: Optimierter Build (EMPFOHLEN)
+### Option A: Optimized Build (RECOMMENDED)
 ```powershell
-# Im backend Verzeichnis:
+# In the backend directory:
 uv run pyinstaller desktop_optimized.spec --clean --noconfirm
 ```
 
-**Vorteile:**
-- Kleinere Download-Größe (1.6 GB statt 3.5 GB)
-- CUDA-Bibliotheken werden nur bei Bedarf heruntergeladen
-- Nutzer ohne GPU sparen Speicherplatz
+**Advantages:**
+- Smaller download size (1.6 GB instead of 3.5 GB)
+- CUDA libraries are downloaded only when needed
+- Users without GPU save disk space
 
-**Nachteile:**  
-- Beim ersten GPU-Einsatz müssen ~750 MB heruntergeladen werden
-- Einmaliger Download-Prozess beim ersten GPU-Feature
+**Disadvantages:**  
+- On first GPU use, ~750 MB must be downloaded
+- One-time download process on first GPU feature use
 
-### Option B: Vollständiger Build (alte Methode)
-Falls du die CUDA-Bibliotheken wieder einbinden willst:
+### Option B: Full Build (legacy method)
+If you want to include the CUDA libraries again:
 
-1. Aktiviere die CUDA-Pakete in `pyproject.toml`:
-   - Entferne die `#` vor den nvidia-cuda/cublas/cudnn Zeilen
+1. Enable the CUDA packages in `pyproject.toml`:
+   - Remove the `#` before the nvidia-cuda/cublas/cudnn lines
    
-2. Installiere die Pakete:
+2. Install the packages:
    ```powershell
    uv sync
    ```
 
-3. Baue mit der normalen Spec:
+3. Build with the standard spec:
    ```powershell
    uv run pyinstaller desktop.spec --clean --noconfirm
    ```
 
-## Nach dem Build
+## After the Build
 
-Der fertige Build ist in: `backend/dist/Meeting Notes/`
+The finished build is located in: `backend/dist/Meeting Notes/`
 
-### Testen des optimierten Builds:
-1. Starte `Meeting Notes.exe`
-2. Gehe zu Settings → GPU Runtime
-3. Prüfe den Status der CUDA-Bibliotheken
-4. Lade bei Bedarf die GPU-Unterstützung herunter
+### Testing the Optimized Build:
+1. Start `Meeting Notes.exe`
+2. Go to Settings → GPU Runtime
+3. Check the status of CUDA libraries
+4. Download GPU support if needed
 
-## Hinweise
+## Notes
 
-- **CUDA-Download-Speicherort**: `%APPDATA%\MeetingNotes\cuda_runtime\`
-- **Download-Größen**:
+- **CUDA Download Location**: `%APPDATA%\MeetingNotes\cuda_runtime\`
+- **Download Sizes**:
   - Whisper GPU: ~850 MB (cudnn + cublas + cudart)
   - LLaMA GPU: ~740 MB (cublasLt + cublas + cudart)
-- **Internet-Verbindung**: Nur für den einmaligen CUDA-Download nötig
+- **Internet Connection**: Only required for the one-time CUDA download
 
 ## Troubleshooting
 
-Falls der Build fehlschlägt:
-1. Stelle sicher, dass das Frontend gebaut wurde
-2. Lösche `build/` und `dist/` Verzeichnisse
-3. Führe `uv sync` erneut aus
-4. Verwende `--clean` beim PyInstaller-Aufruf
+If the build fails:
+1. Make sure the frontend has been built
+2. Delete `build/` and `dist/` directories
+3. Run `uv sync` again
+4. Use `--clean` with the PyInstaller command
 
-**llama-cpp-python Fehler:**
-Falls beim Build die Meldung erscheint:
+**llama-cpp-python Error:**
+If you see this message during the build:
 ```
 ERROR: Failed to collect llama-cpp-python (REQUIRED)
 ```
-Dann muss llama-cpp-python explizit installiert werden (siehe Schritt 2 oben).
+Then llama-cpp-python must be installed explicitly (see step 2 above).
 
-Falls Nutzer im fertigen Build den Fehler erhalten:
+If users receive this error in the finished build:
 ```
 RuntimeError: llama-cpp-python is not available. Install it to enable summarization.
 ```
-Dann wurde das Paket beim Build nicht korrekt eingebunden. Der Build muss mit korrekt installiertem llama-cpp-python wiederholt werden.
+Then the package was not correctly included during the build. The build must be repeated with llama-cpp-python correctly installed.
 
