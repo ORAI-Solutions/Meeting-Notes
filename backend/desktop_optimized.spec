@@ -86,9 +86,9 @@ try:
 except Exception as e:
     print(f"Warning: could not collect ctranslate2 DLLs: {e}")
 
-# Llama-cpp dynamic libraries (CPU/GPU builds) - but exclude CUDA runtime
+# Llama-cpp dynamic libraries (CPU/GPU builds) - REQUIRED, but exclude CUDA runtime
 try:
-    datas += collect_data_files('llama_cpp')
+    llama_data = collect_data_files('llama_cpp')
     llama_libs = collect_dynamic_libs('llama_cpp')
     
     # Filter out CUDA runtime DLLs from llama_cpp
@@ -101,10 +101,17 @@ try:
             else:
                 print(f"Excluding CUDA runtime DLL from llama_cpp: {source_path.name}")
     
+    datas += llama_data
     binaries += filtered_llama_libs
-    hiddenimports += ['llama_cpp']
+    hiddenimports += ['llama_cpp', 'llama_cpp.llama_cpp', 'llama_cpp.llama']
+    print(f"Successfully collected llama-cpp-python: {len(llama_data)} data files, {len(filtered_llama_libs)} binaries")
 except Exception as e:
-    print(f"llama-cpp not found or incomplete, skipping extra collection: {e}")
+    print(f"ERROR: Failed to collect llama-cpp-python (REQUIRED): {e}")
+    print("Please ensure llama-cpp-python is properly installed:")
+    print("  uv pip install llama-cpp-python")
+    print("Or for CUDA support on Windows:")
+    print("  uv pip install llama-cpp-python@https://github.com/abetlen/llama-cpp-python/releases/download/v0.3.4-cu124/llama_cpp_python-0.3.4-cp311-cp311-win_amd64.whl")
+    sys.exit(1)
 
 # SKIP bundling NVIDIA CUDA/CUBLAS/CUDNN runtime DLLs - they will be downloaded on demand
 # This saves approximately 750MB+ in the final build

@@ -28,6 +28,15 @@ Remove-Item -Recurse -Force build, dist -ErrorAction SilentlyContinue
 uv sync
 ```
 
+**Wichtig: llama-cpp-python Installation**
+Das Paket `llama-cpp-python` ist **zwingend erforderlich** für die Summarization-Funktion.
+
+Falls der Build mit einem Fehler abbricht, dass llama-cpp-python fehlt:
+```powershell
+# Für CPU-only Support:
+uv pip install llama-cpp-python
+```
+
 ### 3. Frontend bauen (falls noch nicht gemacht)
 ```powershell
 cd ../frontend
@@ -94,4 +103,17 @@ Falls der Build fehlschlägt:
 2. Lösche `build/` und `dist/` Verzeichnisse
 3. Führe `uv sync` erneut aus
 4. Verwende `--clean` beim PyInstaller-Aufruf
+
+**llama-cpp-python Fehler:**
+Falls beim Build die Meldung erscheint:
+```
+ERROR: Failed to collect llama-cpp-python (REQUIRED)
+```
+Dann muss llama-cpp-python explizit installiert werden (siehe Schritt 2 oben).
+
+Falls Nutzer im fertigen Build den Fehler erhalten:
+```
+RuntimeError: llama-cpp-python is not available. Install it to enable summarization.
+```
+Dann wurde das Paket beim Build nicht korrekt eingebunden. Der Build muss mit korrekt installiertem llama-cpp-python wiederholt werden.
 

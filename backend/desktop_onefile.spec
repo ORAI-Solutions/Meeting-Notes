@@ -47,12 +47,21 @@ try:
 except Exception as e:
     print(f"Warning: could not collect ctranslate2 DLLs: {e}")
 
+# Llama-cpp - REQUIRED for summarization
 try:
-    datas += collect_data_files('llama_cpp')
-    binaries += collect_dynamic_libs('llama_cpp')
-    hiddenimports += ['llama_cpp']
+    llama_data = collect_data_files('llama_cpp')
+    llama_bins = collect_dynamic_libs('llama_cpp')
+    datas += llama_data
+    binaries += llama_bins
+    hiddenimports += ['llama_cpp', 'llama_cpp.llama_cpp', 'llama_cpp.llama']
+    print(f"Successfully collected llama-cpp-python: {len(llama_data)} data files, {len(llama_bins)} binaries")
 except Exception as e:
-    print(f"llama-cpp not found or incomplete, skipping extra collection: {e}")
+    print(f"ERROR: Failed to collect llama-cpp-python (REQUIRED): {e}")
+    print("Please ensure llama-cpp-python is properly installed:")
+    print("  uv pip install llama-cpp-python")
+    print("Or for CUDA support on Windows:")
+    print("  uv pip install llama-cpp-python@https://github.com/abetlen/llama-cpp-python/releases/download/v0.3.4-cu124/llama_cpp_python-0.3.4-cp311-cp311-win_amd64.whl")
+    sys.exit(1)
 
 for pkg in ['nvidia.cudnn', 'nvidia.cublas', 'nvidia.cuda_runtime']:
     try:
