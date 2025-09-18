@@ -1,0 +1,30 @@
+# OS/IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.cursor/
+
+# Python (backend)
+__pycache__
+backend/__pycache__/
+backend/.pytest_cache/
+backend/.ruff_cache/
+backend/.mypy_cache/
+backend/.uv/
+backend/.venv/
+backend/build/
+backend/dist/
+
+# Node/Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/*.tsbuildinfo
+
+# App data (local runtime)
+# Do not commit local app data under %APPDATA%/MeetingNotes
+
+# PyInstaller outputs handled above (backend/build, backend/dist)
+
+

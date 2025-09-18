@@ -1,0 +1,41 @@
+GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3, 19 November 2007
+
+Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+
+Preamble
+
+The GNU Affero General Public License is a free, copyleft license for software and other kinds of works, specifically designed to ensure cooperation with the community in the case of network server software.
+
+The full text of the GNU Affero General Public License version 3 follows.
+
+TERMS AND CONDITIONS
+
+0. Definitions.
+... (AGPL-3.0 full text available at https://www.gnu.org/licenses/agpl-3.0.txt) ...
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Additional attribution:
+Copyright (c) 2025 ORAI Solutions GmbH
+
+Additional Terms per GNU AGPL v3 §7 — Attribution and UI Legal Notices
+
+As a supplement permitted by §7(b)–(c), any covered work that includes an interactive user interface must preserve the following author attribution in its Appropriate Legal Notices:
+- The ORAI Solutions logo
+
+This requirement is satisfied if the user interface provides an "About" or "Credits" section that is clearly labeled and accessible from the main menu or settings within at most two user interactions (clicks/taps). The attribution may be moved but not removed, obscured, or disabled. Modified versions must retain these notices and may add statements that they are modified versions.
+
+Use of the ORAI name and logo is subject to applicable trademark law; this license does not grant trademark rights beyond this attribution requirement. Nothing in these additional terms is intended to impose further restrictions on recipients’ exercise of rights under the GNU AGPL v3.

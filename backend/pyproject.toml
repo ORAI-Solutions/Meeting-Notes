@@ -1,0 +1,59 @@
+[project]
+name = "meeting-notes-backend"
+version = "0.1.0"
+description = "Local backend service for Meeting Notes (FastAPI + SQLModel)"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+  "fastapi>=0.111.0,<0.112",
+  "uvicorn[standard]>=0.30,<0.31",
+  "sqlmodel>=0.0.16,<0.0.17",
+  "SQLAlchemy>=2.0,<3.0",
+  "pydantic>=2.7,<3.0",
+  "pydantic-settings>=2.2,<3.0",
+  "sounddevice>=0.4,<0.5",
+  "soundcard>=0.4.2,<0.5",
+  "soxr>=0.3.6,<0.4",
+  "numpy>=1.26,<2.0",
+  "noisereduce>=3.0.2",  # Audio denoising
+  "scipy>=1.14",  # Signal processing
+  # ASR backends (local-only)
+  # faster-whisper pulls CTranslate2; on Windows, torch>=2.4 provides cuDNN DLLs (ops64_9) needed by recent CT2 builds.
+  "faster-whisper>=1.0,<2.0",
+  # Pin CUDA builds for Windows + Python 3.11 to avoid CPU wheels replacing GPU ones during sync
+  "torch @ https://download.pytorch.org/whl/cu124/torch-2.6.0%2Bcu124-cp311-cp311-win_amd64.whl; platform_system == \"Windows\" and python_version >= \"3.11\" and python_version < \"3.12\"",
+  "torchaudio @ https://download.pytorch.org/whl/cu124/torchaudio-2.6.0%2Bcu124-cp311-cp311-win_amd64.whl; platform_system == \"Windows\" and python_version >= \"3.11\" and python_version < \"3.12\"",
+  "torchvision @ https://download.pytorch.org/whl/cu124/torchvision-0.21.0%2Bcu124-cp311-cp311-win_amd64.whl; platform_system == \"Windows\" and python_version >= \"3.11\" and python_version < \"3.12\"",
+  # CUDA/cuDNN runtime DLLs - now optional, downloaded on-demand by the app
+  # Uncomment these lines if you want to include CUDA libraries in the build:
+  # "nvidia-cuda-runtime-cu12>=12.4; platform_system == 'Windows'",
+  # "nvidia-cublas-cu12>=12.4; platform_system == 'Windows'",  
+  # "nvidia-cudnn-cu12>=9.0; platform_system == 'Windows'",
+  # Local LLM (llama.cpp)
+  # Pin CUDA wheel for Windows + Python 3.11 to enable GPU offload
+  "llama-cpp-python @ https://github.com/abetlen/llama-cpp-python/releases/download/v0.3.4-cu124/llama_cpp_python-0.3.4-cp311-cp311-win_amd64.whl; platform_system == 'Windows' and python_version >= '3.11' and python_version < '3.12'",
+  "llama-cpp-python>=0.3.4; platform_system != 'Windows' or python_version < '3.11' or python_version >= '3.12'",
+  # GUI Window
+  "pywebview>=5.0,<6.0",
+  "requests>=2.31,<3.0",  # For health checks
+]
+
+[tool.uv]
+dev-dependencies = [
+  "pyinstaller>=6.7",
+  "ruff>=0.5",
+  "black>=24.4",
+  "isort>=5.13",
+  "pytest>=8.2",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+
+
