@@ -135,8 +135,9 @@ export default function MeetingDetail({
             setTimeout(poll, 1500);
           } else {
             setIsTranscribing(false);
-            // Refresh meeting detail to load segments
-            try { await axios.get(`/meetings/${meetingId}`); } catch {}
+            if (res.data.status === 'done') {
+              await queryClient.invalidateQueries({ queryKey: ['meeting', meetingId] });
+            }
           }
         } catch (e) {
           setIsTranscribing(false);
